@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 class Node
 {
@@ -35,6 +36,22 @@ void push_front(Node** head_, int new_data_)
     return;
 }
 
+void delete_list(Node** head_)
+{
+    // assign the next node before deleting
+    Node* current = *head_;
+    Node* next_delete;
+
+    while (current->next != nullptr)
+    {
+        next_delete = current->next;
+        std::free(current);
+        current = next_delete;
+    }
+    *head_ = nullptr;
+
+}
+
 void push_back(Node** head_, int new_data_)
 {
     // 1. create new node with data
@@ -56,6 +73,26 @@ void push_back(Node** head_, int new_data_)
     return;
 }
 
+int node_size_iterative(Node* head_)
+{
+    int count = 0;
+    Node* current = head_;
+    
+    while (current != nullptr)
+    {
+        count = count + 1;
+        current = current->next;
+    }
+    return count;
+}
+
+int node_size_recursive(Node* head_)
+{
+    if (head_ == nullptr)
+        return 0;
+    return 1 + node_size_recursive(head_->next);
+}
+
 int main()
 {
     Node* first = new Node(1);
@@ -70,6 +107,14 @@ int main()
     // push_back
     push_back(&first, 10);
 
+    // count the node size
+    std::cout << node_size_iterative(first) << std::endl;
+
+
+    // delete the entire node
+    delete_list(&first);
+
+    // print the result
     print_node(first);
 
     return 0;

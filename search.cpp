@@ -54,11 +54,28 @@ int binary_recursive(const std::vector<int> &my_arr, int num, int lhs, int rhs)
     return -1;
 }
 
+
+int binary_findFloor(const std::vector<int> &my_arr, int key)
+{
+    if (key < my_arr[0]) return -1;
+    int lhs = 0;
+    int rhs = my_arr.size();
+    int m;
+    while (rhs - lhs > 1)
+    {
+        m = lhs + (rhs - lhs) / 2;
+        if (my_arr[m] <= key) lhs = m;
+        else rhs = m;
+    }
+    return m;
+}
+
+
 int main()
 {
     std::vector<int> arr = { 2, 3, 4, 10, 40 };
-    int lookup = 10;
-    int rtn = binary_iterative2(arr, lookup);
+    int lookup = 6;
+    int rtn = binary_findFloor(arr, lookup);
     //int rtn = binary_recursive(arr, lookup, 0, arr.size() - 1);
     (rtn == -1)? std::cout << "Element not found" << std::endl
                : std::cout << "Element found at index " << rtn << std::endl;
